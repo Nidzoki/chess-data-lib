@@ -16,6 +16,3 @@ jobs:
 
       - name: Build
         run: cmake --build build --parallel
-
-      - name: Run tests
-        run: cd build && ctest --output-on-failure

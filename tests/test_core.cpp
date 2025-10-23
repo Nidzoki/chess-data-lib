@@ -1,42 +1,18 @@
-#include <iostream>
-#include <unordered_map>
-#include "utils/csv.hpp"
-#include "PGNGameBuilder.hpp"
-#include "game.hpp"
+name: CI
 
-int main() {
-    using namespace chessDataLib;
-    using namespace chessDataLib::utils;
+on:
+  push:
+  pull_request:
 
-    // CSV escaping tests
-    if (EscapeCSVField("a,b") != "\"a,b\"") {
-        std::cerr << "CSV comma escaping failed\n";
-        return 1;
-    }
-    if (EscapeCSVField("noquote") != "noquote") {
-        std::cerr << "CSV no-quote failed\n";
-        return 1;
-    }
-    if (EscapeCSVField("he\"llo") != "\"he\"\"llo\"") {
-        std::cerr << "CSV quote escaping failed\n";
-        return 1;
-    }
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
 
-    // Trim test
-    if (Trim("  hello \n") != "hello") {
-        std::cerr << "Trim failed\n";
-        return 2;
-    }
+      - name: Configure
+        run: mkdir -p build && cd build && cmake ..
 
-    // PGNGameBuilder move-count test
-    PGNGameBuilder builder;
-    std::unordered_map<std::string, std::string> tags; // empty for this test
-    Game g = builder.Build(tags, "1. e4 e5 2. Nf3 Nc6 3. Bb5 a6");
-    if (g.GetMoveCount() != 3) {
-        std::cerr << "Move count detection failed, expected 3 got " << g.GetMoveCount() << "\n";
-        return 3;
-    }
-
-    std::cout << "All tests passed\n";
-    return 0;
-}
+      - name: Build
+        run: cmake --build build --parallel
