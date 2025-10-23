@@ -1,6 +1,30 @@
-#include "include/databaseStats.hpp"
+#include "databaseStats.hpp"
+#include "utils/csv.hpp"
+#include <algorithm>
+#include <string>
 
 namespace chessDataLib {
+
+// Helper to normalize result tokens used throughout the library
+static std::string NormalizeResultToken(std::string r) {
+    using chessDataLib::utils::Trim;
+    r = Trim(r);
+    if (r == "*" || r == "?" || r.empty()) return "UNKNOWN";
+    // remove trailing punctuation sometimes attached
+    while (!r.empty() && (r.back() == ';' || r.back() == '.')) r.pop_back();
+    if (r == "1-0") return "1-0";
+    if (r == "0-1") return "0-1";
+    if (r == "1/2-1/2" || r == "1/2") return "1/2-1/2";
+    return r;
+}
+
+void DatabaseStats::IncrementResultCount(const std::string& resultRaw) {
+    const auto result = NormalizeResultToken(resultRaw);
+    if (result == "1-0") ++whiteWins;
+    else if (result == "0-1") ++blackWins;
+    else if (result == "1/2-1/2") ++draws;
+    else ++unknownResults;
+}
 
 // === Getters ===
 
@@ -158,19 +182,6 @@ void DatabaseStats::AddPlayer(const std::string& name, const Player& stats) {
         maxGamesByPlayer = games;
         mostActivePlayer = name;
     }
-}
-
-void DatabaseStats::IncrementResultCount(const std::string& result) {
-    if (result == "1-0") {
-        whiteWins++;
-    } else if (result == "0-1") {
-        blackWins++;
-    } else if (result == "1/2-1/2") {
-        draws++;
-    } else {
-        unknownResults++;
-    }
-    totalGames++;
 }
 
 } // namespace chessDataLib

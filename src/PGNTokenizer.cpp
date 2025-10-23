@@ -1,4 +1,4 @@
-#include "include/PGNTokenizer.hpp"
+#include "PGNTokenizer.hpp"
 #include <sstream>
 
 namespace chessDataLib {

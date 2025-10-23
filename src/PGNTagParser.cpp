@@ -1,4 +1,4 @@
-#include "include/PGNTagParser.hpp"
+#include "PGNTagParser.hpp"
 
 namespace chessDataLib {
 

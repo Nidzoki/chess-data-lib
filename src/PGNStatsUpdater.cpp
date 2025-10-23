@@ -1,8 +1,8 @@
-#include "include/PGNStatsUpdater.hpp"
-#include "include/player.hpp"
-#include "include/game.hpp"
-#include "include/tournament.hpp"
-#include "include/databaseStats.hpp"
+#include "PGNStatsUpdater.hpp"
+#include "player.hpp"
+#include "game.hpp"
+#include "tournament.hpp"
+#include "databaseStats.hpp"
 
 namespace chessDataLib {
 

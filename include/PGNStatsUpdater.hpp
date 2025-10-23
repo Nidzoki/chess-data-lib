@@ -1,9 +1,9 @@
 #pragma once
 
-#include "include/game.hpp"
-#include "include/player.hpp"
-#include "include/tournament.hpp"
-#include "include/databaseStats.hpp"
+#include "game.hpp"
+#include "player.hpp"
+#include "tournament.hpp"
+#include "databaseStats.hpp"
 #include <unordered_map>
 #include <string>
 

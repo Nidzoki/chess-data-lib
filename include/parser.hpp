@@ -1,6 +1,6 @@
 #pragma once
 
-#include "include/databaseStats.hpp"
+#include "databaseStats.hpp"
 #include <functional>
 #include <memory>
 #include <string>
@@ -77,13 +77,15 @@ public:
      * @brief Exports player statistics to a CSV file.
      * @param filename Output file path.
      */
-    void ExportPlayerStatsCSV(const std::string& filename) const;
+    // Returns true on success, false on I/O failure
+    bool ExportPlayerStatsCSV(const std::string& filename) const;
 
     /**
      * @brief Exports tournament statistics to a CSV file.
      * @param filename Output file path.
      */
-    void ExportTournamentsCSV(const std::string& filename) const;
+    // Returns true on success, false on I/O failure
+    bool ExportTournamentsCSV(const std::string& filename) const;
 
 private:
     struct Impl; ///< Internal implementation (Pimpl idiom)

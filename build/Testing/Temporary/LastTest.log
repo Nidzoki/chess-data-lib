@@ -1,0 +1,47 @@
+Start testing: Oct 23 22:43 UTC
+----------------------------------------------------------
+1/2 Testing: test_csv
+1/2 Test: test_csv
+Command: "/workspaces/chess-data-lib/build/tests/test_csv"
+Directory: /workspaces/chess-data-lib/build/tests
+"test_csv" start time: Oct 23 22:43 UTC
+Output:
+----------------------------------------------------------
+Running main() from /workspaces/chess-data-lib/build/_deps/googletest-src/googletest/src/gtest_main.cc
+[==========] Running 2 tests from 1 test suite.
+[----------] Global test environment set-up.
+[----------] 2 tests from CSVUtils
+[ RUN      ] CSVUtils.EscapeComma
+[       OK ] CSVUtils.EscapeComma (0 ms)
+[ RUN      ] CSVUtils.Trim
+[       OK ] CSVUtils.Trim (0 ms)
+[----------] 2 tests from CSVUtils (0 ms total)
+
+[----------] Global test environment tear-down
+[==========] 2 tests from 1 test suite ran. (0 ms total)
+[  PASSED  ] 2 tests.
+<end of output>
+Test time =   0.00 sec
+----------------------------------------------------------
+Test Passed.
+"test_csv" end time: Oct 23 22:43 UTC
+"test_csv" time elapsed: 00:00:00
+----------------------------------------------------------
+
+2/2 Testing: test_core
+2/2 Test: test_core
+Command: "/workspaces/chess-data-lib/build/tests/test_core"
+Directory: /workspaces/chess-data-lib/build/tests
+"test_core" start time: Oct 23 22:43 UTC
+Output:
+----------------------------------------------------------
+All tests passed
+<end of output>
+Test time =   0.00 sec
+----------------------------------------------------------
+Test Passed.
+"test_core" end time: Oct 23 22:43 UTC
+"test_core" time elapsed: 00:00:00
+----------------------------------------------------------
+
+End testing: Oct 23 22:43 UTC

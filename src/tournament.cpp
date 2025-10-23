@@ -1,4 +1,4 @@
-#include "include/Tournament.hpp"
+#include "tournament.hpp"
 
 namespace chessDataLib {
 

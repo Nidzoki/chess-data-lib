@@ -1,2 +1,2 @@
-C:\PROGRA~1\MINGW-~1\X86_64~1.0-P\mingw64\bin\ar.exe qc libchessDataLib.a CMakeFiles/chessDataLib.dir/src/chessDataLib.cpp.obj
-C:\PROGRA~1\MINGW-~1\X86_64~1.0-P\mingw64\bin\ranlib.exe libchessDataLib.a
+/usr/bin/ar qc libchessDataLib.a CMakeFiles/chessDataLib.dir/src/parser.cpp.o CMakeFiles/chessDataLib.dir/src/PGNStatsUpdater.cpp.o CMakeFiles/chessDataLib.dir/src/PGNGameBuilder.cpp.o CMakeFiles/chessDataLib.dir/src/PGNTagParser.cpp.o CMakeFiles/chessDataLib.dir/src/PGNTokenizer.cpp.o CMakeFiles/chessDataLib.dir/src/player.cpp.o CMakeFiles/chessDataLib.dir/src/tournament.cpp.o CMakeFiles/chessDataLib.dir/src/databaseStats.cpp.o CMakeFiles/chessDataLib.dir/src/game.cpp.o CMakeFiles/chessDataLib.dir/src/utils/csv.cpp.o
+/usr/bin/ranlib libchessDataLib.a

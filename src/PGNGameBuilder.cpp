@@ -1,4 +1,6 @@
-#include "include/PGNGameBuilder.hpp"
+#include "PGNGameBuilder.hpp"
+#include <regex>
+#include <sstream>
 
 namespace chessDataLib {
 
@@ -17,12 +19,33 @@ Game PGNGameBuilder::Build(const std::unordered_map<std::string, std::string>& t
     if (tags.count("ECO")) game.SetEco(tags.at("ECO"));
     if (tags.count("Opening")) game.SetOpening(tags.at("Opening"));
 
-    // Heuristika: broj poteza = broj točaka (npr. "1. e4 e5 2. Nf3 Nc6" → 2 poteza)
-    int moveCount = 0;
-    for (char c : moveText) {
-        if (c == '.') moveCount++;
+    // Robustly detect move count by finding move-number tokens like "1." or "23."
+    try {
+        std::regex mvnum(R"((\d+)\s*\.)");
+        std::string s = moveText;
+        std::size_t lastMoveNumber = 0;
+        for (std::sregex_iterator it(s.begin(), s.end(), mvnum), end; it != end; ++it) {
+            lastMoveNumber = std::stoul((*it)[1].str());
+        }
+        if (lastMoveNumber > 0) {
+            // lastMoveNumber is the index of the last full move; store as full-move count
+            game.SetMoveCount(static_cast<int>(lastMoveNumber));
+        } else {
+            // fallback: attempt to count move tokens (naive)
+            std::istringstream iss(s);
+            std::string tok;
+            int moves = 0;
+            while (iss >> tok) {
+                // ignore move numbers if token ends with '.'
+                if (!tok.empty() && tok.back() == '.') continue;
+                ++moves;
+            }
+            // convert ply to move pairs (approx)
+            game.SetMoveCount((moves + 1) / 2);
+        }
+    } catch (...) {
+        // keep prior/default move-count if anything goes wrong
     }
-    game.SetMoveCount(moveCount);
 
     return game;
 }

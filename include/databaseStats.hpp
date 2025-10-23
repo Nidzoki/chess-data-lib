@@ -1,8 +1,8 @@
 #pragma once
 
-#include "include/tournament.hpp"
-#include "include/game.hpp"
-#include "include/player.hpp"
+#include "tournament.hpp"
+#include "game.hpp"
+#include "player.hpp"
 #include <string>
 #include <vector>
 #include <unordered_map>

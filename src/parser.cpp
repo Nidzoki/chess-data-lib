@@ -1,6 +1,8 @@
-#include "include/Parser.hpp"
+#include "parser.hpp"
+#include "utils/csv.hpp"
 #include <fstream>
-#include <sstream>
+#include <iostream>
+#include <limits>
 
 namespace chessDataLib {
 
@@ -47,33 +49,73 @@ const std::unordered_map<std::string, Tournament>& Parser::GetTournaments() cons
     return pimpl->tournaments;
 }
 
-void Parser::ExportPlayerStatsCSV(const std::string& filename) const {
-    std::ofstream out(filename);
-    if (!out) return;
-
-    out << "Player,TotalGames,Wins,Losses,Draws,Win%,Loss%,Draw%\n";
-    for (const auto& [name, player] : pimpl->players) {
-        out << name << ","
-            << player.GetTotalGames() << ","
-            << player.GetWinsCount() << ","
-            << player.GetLossCount() << ","
-            << player.GetDrawCount() << ","
-            << player.GetWinPercentage() << ","
-            << player.GetLossPercentage() << ","
-            << player.GetDrawPercentage() << "\n";
+// CSV-safe ExportPlayerStatsCSV
+bool Parser::ExportPlayerStatsCSV(const std::string& path) const {
+    std::ofstream ofs(path);
+    if (!ofs.is_open()) {
+        std::cerr << "ExportPlayerStatsCSV: failed to open " << path << "\n";
+        return false;
     }
+
+    ofs << "Player,TotalGames,Wins,Losses,Draws,WinPct,LossPct,DrawPct\n";
+
+    for (const auto& kv : pimpl->players) {
+        const auto& p = kv.second;
+        const auto name = p.GetName();
+        const auto total = p.GetTotalGames();
+        const auto wins = p.GetWinsCount();
+        const auto losses = p.GetLossCount();
+        const auto draws = p.GetDrawCount();
+        const auto wp = p.GetWinPercentage();
+        const auto lp = p.GetLossPercentage();
+        const auto dp = p.GetDrawPercentage();
+
+        ofs
+            << chessDataLib::utils::EscapeCSVField(name) << ','
+            << total << ','
+            << wins << ','
+            << losses << ','
+            << draws << ','
+            << wp << ','
+            << lp << ','
+            << dp << '\n';
+    }
+
+    return true;
 }
 
-void Parser::ExportTournamentsCSV(const std::string& filename) const {
-    std::ofstream out(filename);
-    if (!out) return;
-
-    out << "Tournament,TotalGames,UniquePlayers\n";
-    for (const auto& [name, tournament] : pimpl->tournaments) {
-        out << name << ","
-            << tournament.GetTotalGames() << ","
-            << tournament.GetUniquePlayers() << "\n";
+// CSV-safe ExportTournamentsCSV
+bool Parser::ExportTournamentsCSV(const std::string& path) const {
+    std::ofstream ofs(path);
+    if (!ofs.is_open()) {
+        std::cerr << "ExportTournamentsCSV: failed to open " << path << "\n";
+        return false;
     }
+
+    ofs << "Tournament,Games,TopPlayer\n";
+    for (const auto& kv : pimpl->tournaments) {
+        const auto& t = kv.second;
+        const auto name = t.GetName();
+        const auto games = t.GetTotalGames();
+
+        // determine top player by game count in this tournament
+        const auto& pgc = t.GetPlayerGameCount();
+        std::string topPlayer;
+        int topCount = -1;
+        for (const auto& pp : pgc) {
+            if (pp.second > topCount) {
+                topCount = pp.second;
+                topPlayer = pp.first;
+            }
+        }
+
+        ofs
+            << chessDataLib::utils::EscapeCSVField(name) << ','
+            << games << ','
+            << chessDataLib::utils::EscapeCSVField(topPlayer) << '\n';
+    }
+
+    return true;
 }
 
 // === Static analysis ===
