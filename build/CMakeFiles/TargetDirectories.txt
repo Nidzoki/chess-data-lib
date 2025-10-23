@@ -1,0 +1,3 @@
+C:/Users/nikol/Desktop/chessDataLib/build/CMakeFiles/chessDataLib.dir
+C:/Users/nikol/Desktop/chessDataLib/build/CMakeFiles/edit_cache.dir
+C:/Users/nikol/Desktop/chessDataLib/build/CMakeFiles/rebuild_cache.dir
