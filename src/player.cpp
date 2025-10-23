@@ -1,56 +1,56 @@
-#include "include/player.hpp"
+#include "include/Player.hpp"
+#include <sstream>
 #include <algorithm>
 
-namespace chessDataLib
-{
+namespace chessDataLib {
 
 // === Getters ===
 
-const std::string& Player::GetName() const{ 
-    return name; 
+const std::string& Player::GetName() const {
+    return name;
 }
 
-int Player::GetTotalGames() const{ 
-    return totalGames; 
+int Player::GetTotalGames() const {
+    return totalGames;
 }
 
-int Player::GetGamesAsWhiteCount()  const{ 
-    return gamesAsWhite; 
+int Player::GetGamesAsWhiteCount() const {
+    return gamesAsWhite;
 }
 
-int Player::GetGamesAsBlackCount()  const{
+int Player::GetGamesAsBlackCount() const {
     return gamesAsBlack;
 }
 
-int Player::GetWinsCount()  const{
+int Player::GetWinsCount() const {
     return wins;
 }
 
-int Player::GetLossCount()  const{
+int Player::GetLossCount() const {
     return losses;
 }
 
-int Player::GetDrawCount()  const{
+int Player::GetDrawCount() const {
     return draws;
 }
 
-double Player::GetWinPercentage() const{
-    return totalGames > 0 ? static_cast<double>(wins) / totalGames * 100.0 : 0.0;
+double Player::GetWinPercentage() const {
+    return totalGames ? (100.0 * wins / totalGames) : 0.0;
 }
 
-double Player::GetLossPercentage() const{
-    return totalGames > 0 ? static_cast<double>(losses) / totalGames * 100.0 : 0.0;
+double Player::GetLossPercentage() const {
+    return totalGames ? (100.0 * losses / totalGames) : 0.0;
 }
 
-double Player::GetDrawPercentage() const{
-    return totalGames > 0 ? static_cast<double>(draws) / totalGames * 100.0 : 0.0;
+double Player::GetDrawPercentage() const {
+    return totalGames ? (100.0 * draws / totalGames) : 0.0;
 }
 
-const std::vector<std::string> Player::GetOpponents() const{
+const std::vector<std::string> Player::GetOpponents() const {
     return opponents;
 }
 
-const std::unordered_map<std::string, int> Player::GetOpeningFrequency()  const{
+const std::unordered_map<std::string, int> Player::GetOpeningFrequency() const {
     return openingFrequency;
 }
 
@@ -92,14 +92,32 @@ void Player::SetOpeningFrequency(const std::unordered_map<std::string, int>& val
     openingFrequency = val;
 }
 
-void Player::AddOpponent(const std::string& name) {
-    if (std::find(opponents.begin(), opponents.end(), name) == opponents.end()) {
-        opponents.push_back(name);
+// === Incremental updates ===
+
+void Player::IncrementGameCount() {
+    totalGames++;
+}
+
+void Player::IncrementWinCount() {
+    wins++;
+}
+
+void Player::IncrementLossCount() {
+    losses++;
+}
+
+void Player::IncrementDrawCount() {
+    draws++;
+}
+
+void Player::AddOpponent(const std::string& opponentName) {
+    if (std::find(opponents.begin(), opponents.end(), opponentName) == opponents.end()) {
+        opponents.push_back(opponentName);
     }
 }
 
 void Player::IncrementOpening(const std::string& ecoCode) {
-    ++openingFrequency[ecoCode];
+    openingFrequency[ecoCode]++;
 }
 
 void Player::ResetStats() {
@@ -125,22 +143,23 @@ void Player::MergeWith(const Player& other) {
         AddOpponent(opp);
     }
 
-    for (const auto& [opening, count] : other.openingFrequency) {
-        openingFrequency[opening] += count;
+    for (const auto& [eco, count] : other.openingFrequency) {
+        openingFrequency[eco] += count;
     }
 }
 
 std::string Player::ToString() const {
-    std::string summary;
-    summary += "Player: " + name + "\n";
-    summary += "Total Games: " + std::to_string(totalGames) + "\n";
-    summary += "White: " + std::to_string(gamesAsWhite) + ", Black: " + std::to_string(gamesAsBlack) + "\n";
-    summary += "Wins: " + std::to_string(wins) + " (" + std::to_string(GetWinPercentage()) + "%)\n";
-    summary += "Losses: " + std::to_string(losses) + " (" + std::to_string(GetLossPercentage()) + "%)\n";
-    summary += "Draws: " + std::to_string(draws) + " (" + std::to_string(GetDrawPercentage()) + "%)\n";
-    summary += "Unique Opponents: " + std::to_string(opponents.size()) + "\n";
-    summary += "Openings Used: " + std::to_string(openingFrequency.size()) + "\n";
-    return summary;
+    std::ostringstream out;
+    out << "Player: " << name << "\n"
+        << "Total Games: " << totalGames << "\n"
+        << "Wins: " << wins << " (" << GetWinPercentage() << "%)\n"
+        << "Losses: " << losses << " (" << GetLossPercentage() << "%)\n"
+        << "Draws: " << draws << " (" << GetDrawPercentage() << "%)\n"
+        << "Games as White: " << gamesAsWhite << "\n"
+        << "Games as Black: " << gamesAsBlack << "\n"
+        << "Opponents: " << opponents.size() << "\n"
+        << "Openings used: " << openingFrequency.size() << "\n";
+    return out.str();
 }
 
 } // namespace chessDataLib

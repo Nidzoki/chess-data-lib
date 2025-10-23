@@ -4,7 +4,7 @@
 #include <vector>
 #include <unordered_map>
 
-namespace chessDataLib{
+namespace chessDataLib {
 
 /**
  * @brief Represents a chess player and their game statistics.
@@ -12,7 +12,6 @@ namespace chessDataLib{
  * Stores basic player information, game counts, results, opponent list,
  * and frequency of openings used.
  */
-
 class Player {
 private:
     std::string name;  ///< Player's name
@@ -159,6 +158,28 @@ public:
      */
     void SetOpeningFrequency(const std::unordered_map<std::string, int>& val);
 
+    // === Incremental updates ===
+
+    /**
+     * @brief Increments the total number of games played.
+     */
+    void IncrementGameCount();
+
+    /**
+     * @brief Increments the number of wins.
+     */
+    void IncrementWinCount();
+
+    /**
+     * @brief Increments the number of losses.
+     */
+    void IncrementLossCount();
+
+    /**
+     * @brief Increments the number of draws.
+     */
+    void IncrementDrawCount();
+
     /**
      * @brief Adds an opponent to the player's list if not already present.
      * @param name Opponent's name.
@@ -189,7 +210,6 @@ public:
      * @return String containing name, game counts, results, and percentages.
      */
     std::string ToString() const;
-
 };
 
 } // namespace chessDataLib

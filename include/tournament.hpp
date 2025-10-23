@@ -21,6 +21,19 @@ private:
     std::unordered_map<std::string, int> playerGameCount;  ///< Games played per player
 
 public:
+    // === Constructors ===
+
+    /**
+     * @brief Constructs a tournament with a given name.
+     * @param name Tournament name.
+     */
+    explicit Tournament(const std::string& name);
+
+    /**
+     * @brief Default constructor.
+     */
+    Tournament() = default;
+
     // === Getters ===
 
     /**
@@ -94,6 +107,13 @@ public:
      * @param player Name of the player.
      */
     void AddPlayer(const std::string& player);
+
+    /**
+     * @brief Adds a game to the tournament's total count.
+     * 
+     * Increments the totalGames counter by one.
+     */
+    void AddGame();
 };
 
 } // namespace chessDataLib

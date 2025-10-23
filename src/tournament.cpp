@@ -1,6 +1,10 @@
-#include "include/tournament.hpp"
+#include "include/Tournament.hpp"
 
 namespace chessDataLib {
+
+// === Constructors ===
+
+Tournament::Tournament(const std::string& name) : name(name) {}
 
 // === Getters ===
 
@@ -53,6 +57,10 @@ void Tournament::AddPlayer(const std::string& player) {
         players.push_back(player);
         uniquePlayers++;
     }
+    totalGames++;
+}
+
+void Tournament::AddGame() {
     totalGames++;
 }
 
