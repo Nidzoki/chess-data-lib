@@ -4,7 +4,7 @@
 namespace chessDataLib
 {
 
-// === Get ===
+// === Getters ===
 
 const std::string& Player::GetName() const{ 
     return name; 
@@ -54,7 +54,7 @@ const std::unordered_map<std::string, int> Player::GetOpeningFrequency()  const{
     return openingFrequency;
 }
 
-// === Set ===
+// === Setters ===
 
 void Player::SetName(const std::string& val) {
     name = val;
